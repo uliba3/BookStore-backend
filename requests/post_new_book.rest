@@ -1,0 +1,7 @@
+POST http://localhost:3000/api/books Content-Type: application/json
+
+{
+  "title": "The Lord of the Rings",
+  "authors": ["J. R. R. Tolkien"],
+  "id": "AZ5J6B1-4BoC"
+}
