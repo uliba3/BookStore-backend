@@ -23,9 +23,10 @@ booksRouter.post('/', async (request, response) => {
         pagecount: body.pageCount,
         imageLinks: body.imageLinks,
         language: body.language,
-        id: body.id,
+        bookId: body.bookId,
     })
 
+    console.log(book);
     const savedBook = await book.save()
     response.json(savedBook)
 })

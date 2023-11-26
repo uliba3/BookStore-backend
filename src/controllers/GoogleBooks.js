@@ -25,7 +25,7 @@ bookSearchRouter.get('/', async (request, response) => {
                 pagecount: book.volumeInfo.pageCount,
                 imageLinks: book.volumeInfo.imageLinks,
                 language: book.volumeInfo.language,
-                id: book.id,
+                bookId: book.id,
             }
         }));
     } catch (error) {

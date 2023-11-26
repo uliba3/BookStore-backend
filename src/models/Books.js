@@ -17,7 +17,7 @@ const booksSchema = new mongoose.Schema({
             thumbnail: String,
         },
         language: String,
-        id: String,
+        bookId: String,
       })
 
 booksSchema.set('toJSON', {
