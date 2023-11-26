@@ -2,20 +2,22 @@
 const mongoose = require('mongoose')
 
 const booksSchema = new mongoose.Schema({
-        title: {
-          type: String,
-          required: true
+        title: String,
+        authors: [String],
+        publisher: String,
+        publishedDate: String,
+        description: String,
+        industryIdentifiers: [{
+          name: String,
+          identifier: String,
+      }],      
+        pagecount: Number,
+        imageLinks: {
+            smallThumbnail: String,
+            thumbnail: String,
         },
-        authors: [{
-          type: String,
-          required: true
-        }],
-        imageLink: {
-          type: String,
-          required: true
-        },
-        isbn13: String,
-        isbn13: String,
+        language: String,
+        id: String,
       })
 
 booksSchema.set('toJSON', {

@@ -10,10 +10,20 @@ booksRouter.get('/', async (request, response) => {
 booksRouter.post('/', async (request, response) => {
     const body = request.body
     console.log(body);
+    const industryIdentifiers = body.industryIdentifiers.map( identifier => { 
+        return { name: identifier.type, identifier: identifier.identifier 
+    }});
     const book = new Books({
         title: body.title,
         authors: body.authors,
-        id: body.id
+        publisher: body.publisher,
+        publishedDate: body.publishedDate,
+        description: body.description,
+        industryIdentifiers: industryIdentifiers,
+        pagecount: body.pageCount,
+        imageLinks: body.imageLinks,
+        language: body.language,
+        id: body.id,
     })
 
     const savedBook = await book.save()
