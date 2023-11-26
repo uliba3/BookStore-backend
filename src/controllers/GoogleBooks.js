@@ -5,7 +5,7 @@ require('dotenv').config();
 const base_url = process.env.GOOGLEBOOKS_URI;
 
 bookSearchRouter.get('/', async (request, response) => {
-    const url = base_url + request.query.q;
+    const url = base_url + "q=" + request.query.q + "&" + "startIndex=" + request.query.startIndex;
     try {
         // Make an Axios GET request to an external API
         const apiResponse = await axios.get(url);
@@ -25,6 +25,7 @@ bookSearchRouter.get('/', async (request, response) => {
                 pagecount: book.volumeInfo.pageCount,
                 imageLinks: book.volumeInfo.imageLinks,
                 language: book.volumeInfo.language,
+                id: book.id,
             }
         }));
     } catch (error) {
