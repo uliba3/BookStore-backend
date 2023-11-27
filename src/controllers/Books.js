@@ -2,6 +2,7 @@ const booksRouter = require('express').Router()
 const Books = require('../models/Books')
 
 booksRouter.get('/', async (request, response) => {
+    console.log("GET /api/books");
     const books = await Books.find({})
     console.log(books);
     response.json(books)
@@ -34,6 +35,11 @@ booksRouter.post('/', async (request, response) => {
 booksRouter.delete('/', async (request, response) => {
     const books = await Books.deleteMany({});
     response.json(books);
+})
+
+booksRouter.delete('/:id', async (request, response) => {
+    const book = await Books.deleteMany({bookId: request.params.id});
+    response.json(book)
 })
 
 module.exports = booksRouter
