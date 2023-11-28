@@ -1,20 +1,28 @@
 const booksRouter = require('express').Router()
-const Books = require('../models/Books')
+const User = require('../models/user')
+import { verify } from '../utils/verify'
 
 booksRouter.get('/', async (request, response) => {
     console.log("GET /api/books");
-    const books = await Books.find({})
+    const decodedToken = verify(request);
+    const user = await User.findById(decodedToken.id)
+    const books = user.books;
     console.log(books);
-    response.json(books)
+    response.json(books);
 })
 
 booksRouter.post('/', async (request, response) => {
-    const body = request.body
-    console.log(body);
-    const industryIdentifiers = body.industryIdentifiers.map( identifier => { 
-        return { name: identifier.type, identifier: identifier.identifier 
-    }});
-    const book = new Books({
+    try {
+      const body = request.body;
+      console.log(body);
+
+      const decodedToken = verify(request);
+  
+      const industryIdentifiers = body.industryIdentifiers.map((identifier) => {
+        return { name: identifier.type, identifier: identifier.identifier };
+      });
+  
+      const newBook = {
         title: body.title,
         authors: body.authors,
         publisher: body.publisher,
@@ -25,21 +33,50 @@ booksRouter.post('/', async (request, response) => {
         imageLinks: body.imageLinks,
         language: body.language,
         bookId: body.bookId,
-    })
-
-    console.log(book);
-    const savedBook = await book.save()
-    response.json(savedBook)
-})
+      };
+  
+      // Find the user by ID and update the books array
+      const filter = { _id: decodedToken.id };
+      const update = {
+        $push: {
+          books: newBook,
+        },
+      };
+  
+      const updatedUser = await User.updateOne(filter, update);
+  
+      if (updatedUser.nModified === 0) {
+        return response.status(404).json({ error: 'User not found' });
+      }
+      response.json([...updatedUser.books, newBook]);
+    } catch (error) {
+      console.error(error);
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 booksRouter.delete('/', async (request, response) => {
-    const books = await Books.deleteMany({});
-    response.json(books);
+    const decodedToken = verify(request);
+    const filter = { _id: decodedToken.id };
+    const update = {
+        $set: {
+            books: [],
+        },
+    };
+    const updatedUser = await User.updateOne(filter, update);
+    response.json([]);
 })
 
 booksRouter.delete('/:id', async (request, response) => {
-    const book = await Books.deleteMany({bookId: request.params.id});
-    response.json(book)
+    const decodedToken = verify(request);
+    const filter = { _id: decodedToken.id };
+    const update = {
+        $pull: {
+            books: { bookId: request.params.id },
+        },
+    };
+    const updatedUser = await User.updateOne(filter, update);
+    response.json(updatedUser.books.filter((book) => book.bookId !== request.params.id));
 })
 
 module.exports = booksRouter
