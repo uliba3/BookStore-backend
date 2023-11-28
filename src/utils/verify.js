@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+
 const getTokenFrom = request => {
     const authorization = request.get('authorization')
     if (authorization && authorization.startsWith('Bearer ')) {
@@ -8,7 +9,7 @@ const getTokenFrom = request => {
     return null
 }
 
-const verify = (request) => {
+const verifyRequest = (request) => {
     const token = getTokenFrom(request);
   try {
     const decodedToken = jwt.verify(token, process.env.SECRET);
@@ -21,4 +22,4 @@ const verify = (request) => {
   }
 };
 
-module.exports = { verify };
+module.exports = { verifyRequest };

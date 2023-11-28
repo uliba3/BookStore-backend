@@ -1,10 +1,10 @@
 const booksRouter = require('express').Router()
 const User = require('../models/user')
-import { verify } from '../utils/verify'
+import { verifyRequest } from '../utils/verify'
 
 booksRouter.get('/', async (request, response) => {
     console.log("GET /api/books");
-    const decodedToken = verify(request);
+    const decodedToken = verifyRequest(request);
     const user = await User.findById(decodedToken.id)
     const books = user.books;
     console.log(books);
@@ -16,7 +16,7 @@ booksRouter.post('/', async (request, response) => {
       const body = request.body;
       console.log(body);
 
-      const decodedToken = verify(request);
+      const decodedToken = verifyRequest(request);
   
       const industryIdentifiers = body.industryIdentifiers.map((identifier) => {
         return { name: identifier.type, identifier: identifier.identifier };
@@ -56,7 +56,7 @@ booksRouter.post('/', async (request, response) => {
 });
 
 booksRouter.delete('/', async (request, response) => {
-    const decodedToken = verify(request);
+    const decodedToken = verifyRequest(request);
     const filter = { _id: decodedToken.id };
     const update = {
         $set: {
@@ -68,7 +68,7 @@ booksRouter.delete('/', async (request, response) => {
 })
 
 booksRouter.delete('/:id', async (request, response) => {
-    const decodedToken = verify(request);
+    const decodedToken = verifyRequest(request);
     const filter = { _id: decodedToken.id };
     const update = {
         $pull: {

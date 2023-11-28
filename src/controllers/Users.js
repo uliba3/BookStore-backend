@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+import { verifyRequest } from '../utils/verify'
 
 usersRouter.post('/', async (request, response) => {
   const { username, password } = request.body
@@ -12,6 +13,7 @@ usersRouter.post('/', async (request, response) => {
   const user = new User({
     username,
     passwordHash,
+    books: []
   })
 
   const savedUser = await user.save()
@@ -20,11 +22,7 @@ usersRouter.post('/', async (request, response) => {
 })
 
 usersRouter.get('/', async (request, response) => {
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-    if (!decodedToken.id) {
-        return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
+    const users = await User.find({});
     response.json(users)
 })
 
