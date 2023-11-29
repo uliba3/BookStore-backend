@@ -14,6 +14,8 @@ const logger = {
 
 const booksRouter = require('./src/controllers/Books');
 const bookSearchRouter = require('./src/controllers/GoogleBooks');
+const usersRouter = require('./src/controllers/Users');
+const loginRouter = require('./src/controllers/Login');
 
 mongoose.set('strictQuery', false);
 
@@ -22,18 +24,22 @@ if (process.env.NODE_ENV === 'dev') {
     mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         logger.info('connected to MongoDB');
-      })
-      .catch((error) => {
+    })
+    .catch((error) => {
         logger.error('error connecting to MongoDB:', error.message);
-      });
+    });
 }
 
 // Middleware
 app.use(cors()); // Enable CORS for all requests
 app.use(express.json()); // Parse JSON requests
+// Serve static files from the 'build' directory
+app.use(express.static('build'));
 
 app.use('/api/books', booksRouter);
 app.use('/api/booksSearch', bookSearchRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/login', loginRouter);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
