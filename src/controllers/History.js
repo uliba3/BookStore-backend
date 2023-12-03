@@ -1,23 +1,23 @@
 const express = require('express');
-const booksRouter = express.Router();
+const historyRouter = express.Router();
 const User = require('../models/user');
 const { verifyRequest } = require('../utils/verify');
 
-booksRouter.get('/', async (request, response) => {
+historyRouter.get('/', async (request, response) => {
     try {
-        console.log("GET /api/books");
+        console.log("GET /api/history");
         const decodedToken = verifyRequest(request);
         const user = await User.findById(decodedToken.id);
-        const books = user ? user.books : [];
-        console.log(books);
-        response.json(books);
+        const history = user ? user.history : [];
+        console.log(history);
+        response.json(history);
     } catch (error) {
         console.error(error);
         response.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-booksRouter.post('/', async (request, response) => {
+historyRouter.post('/', async (request, response) => {
     try {
         const body = request.body;
         console.log(body);
@@ -43,7 +43,7 @@ booksRouter.post('/', async (request, response) => {
         };
 
         const filter = { _id: decodedToken.id };
-        const update = { $push: { books: newBook } };
+        const update = { $push: { history: newBook } };
 
         const updatedUser = await User.updateOne(filter, update);
 
@@ -52,21 +52,21 @@ booksRouter.post('/', async (request, response) => {
         }
 
         const user = await User.findById(decodedToken.id);
-        const books = user ? user.books : [];
+        const history = user ? user.history : [];
 
-        response.json(books);
+        response.json(history);
     } catch (error) {
         console.error(error);
         response.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-booksRouter.delete('/', async (request, response) => {
+historyRouter.delete('/', async (request, response) => {
     try {
         const decodedToken = verifyRequest(request);
         console.log(decodedToken);
         const filter = { _id: decodedToken.id };
-        const update = { $set: { books: [] } };
+        const update = { $set: { history: [] } };
 
         await User.updateOne(filter, update);
         response.json([]);
@@ -76,21 +76,21 @@ booksRouter.delete('/', async (request, response) => {
     }
 });
 
-booksRouter.delete('/:id', async (request, response) => {
+historyRouter.delete('/:id', async (request, response) => {
     try {
         const decodedToken = verifyRequest(request);
         const filter = { _id: decodedToken.id };
-        const update = { $pull: { books: { bookId: request.params.id } } };
+        const update = { $pull: { history: { bookId: request.params.id } } };
 
         await User.updateOne(filter, update);
 
         const user = await User.findById(decodedToken.id);
-        const updatedBooks = user ? user.books.filter(book => book.bookId !== request.params.id) : [];
-        response.json(updatedBooks);
+        const history = user ? user.history.filter(book => book.bookId !== request.params.id) : [];
+        response.json(history);
     } catch (error) {
         console.error(error);
         response.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-module.exports = booksRouter;
+module.exports = historyRouter;

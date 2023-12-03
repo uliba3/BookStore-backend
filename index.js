@@ -12,10 +12,11 @@ const logger = {
   error: console.error,
 };
 
-const booksRouter = require('./src/controllers/Books');
 const bookSearchRouter = require('./src/controllers/GoogleBooks');
 const usersRouter = require('./src/controllers/Users');
 const loginRouter = require('./src/controllers/Login');
+const historyRouter = require('./src/controllers/History');
+const wishlistRouter = require('./src/controllers/Wishlist');
 
 mongoose.set('strictQuery', false);
 
@@ -36,7 +37,8 @@ app.use(express.json()); // Parse JSON requests
 // Serve static files from the 'build' directory
 app.use(express.static('build'));
 
-app.use('/api/books', booksRouter);
+app.use('/api/history', historyRouter);
+app.use('/api/wishlist', wishlistRouter);
 app.use('/api/booksSearch', bookSearchRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);

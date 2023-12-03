@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
         unique: true
       },
       passwordHash: String,
-      books: [{
+      history: [{
         title: String,
         authors: [String],
         publisher: String,
@@ -26,7 +26,25 @@ const userSchema = new mongoose.Schema({
         },
         language: String,
         bookId: String,
-      }]
+      }],
+      wishlist: [{
+        title: String,
+        authors: [String],
+        publisher: String,
+        publishedDate: String,
+        description: String,
+        industryIdentifiers: [{
+          name: String,
+          identifier: String,
+        }],      
+        pagecount: Number,
+        imageLinks: {
+            smallThumbnail: String,
+            thumbnail: String,
+        },
+        language: String,
+        bookId: String,
+      }],
 })
 
 userSchema.plugin(uniqueValidator)
