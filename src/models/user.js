@@ -20,9 +20,10 @@ const userSchema = new mongoose.Schema({
           identifier: String,
         }],      
         pagecount: Number,
+        categories: [String],
         imageLinks: {
-            smallThumbnail: String,
             thumbnail: String,
+            extraLarge: String,
         },
         language: String,
         bookId: String,
@@ -39,8 +40,8 @@ const userSchema = new mongoose.Schema({
         }],      
         pagecount: Number,
         imageLinks: {
-            smallThumbnail: String,
             thumbnail: String,
+            extraLarge: String,
         },
         language: String,
         bookId: String,

@@ -37,6 +37,7 @@ historyRouter.post('/', async (request, response) => {
             description: body.description,
             industryIdentifiers: industryIdentifiers,
             pagecount: body.pageCount,
+            categories: body.categories,
             imageLinks: body.imageLinks,
             language: body.language,
             bookId: body.bookId,
