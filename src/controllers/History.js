@@ -24,7 +24,7 @@ historyRouter.post('/', async (request, response) => {
 
         const decodedToken = verifyRequest(request);
 
-        const industryIdentifiers = body.industryIdentifiers.map(identifier => ({
+        const industryIdentifiers = (body.industryIdentifiers || []).map(identifier => ({
             name: identifier.type,
             identifier: identifier.identifier
         }));
