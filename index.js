@@ -33,6 +33,7 @@ if (process.env.NODE_ENV === 'dev') {
 
 // Middleware
 app.use(cors()); // Enable CORS for all requests
+app.use(express.static('dist')); // Serve static files from the 'dist' directory
 app.use(express.json()); // Parse JSON requests
 // Serve static files from the 'build' directory
 app.use(express.static('build'));
