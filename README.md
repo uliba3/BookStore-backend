@@ -4,7 +4,7 @@ This is a web application for searching books, managing wishlists and history. U
 
 <div style="display: flex; justify-content: space-between;">
   <img src="dist\assets\bookStoreListTransparent-xv8MKAH4.gif" alt="book store books gif" width="400">
-  <img src="dist\assets\bookStoreListTransparent-xv8MKAH4.gif" alt="book store book gif" width="400">
+  <img src="dist\assets\bookStoreSearchResultTransparent-0kovegeJ.gif" alt="book store book gif" width="400">
 </div>
 
 ## Features
